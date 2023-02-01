@@ -1,0 +1,85 @@
+@model MemberVM
+
+@{
+    ViewData["Title"] = Model.MemberId is null ? "Create" : "Edit";
+}
+
+<style>
+    .member-image{
+        border-radius: 3px;
+        object-fit: cover; padding: 2px;
+        width: 120px; height: 100px;
+        border: 1px solid rgb(169, 30, 255);
+        margin: 10px 0;
+    }
+</style>
+
+<form class="w-40" asp-action="@ViewData["Title"]" method="post" enctype="multipart/form-data">
+    <h2 class="pb-10">@ViewData["Title"] Movie</h2>
+
+    <div class="input-container">
+        <input type="hidden" asp-for="MemberId">
+        <label asp-for="MemberName" class="w-40">Member Name</label>
+        <input type="text" class="input" asp-for="MemberName">
+    </div>
+    <div class="message-box pd-x-28 error">
+        <span asp-validation-for="MemberName"></span>
+    </div>
+
+
+    <div class="input-container">
+        <label asp-for="DateOfBirth" class="w-40">Date of birth</label>
+        <input type="text" class="input" asp-for="DateOfBirth">
+    </div>
+    <div class="message-box pd-x-28 error">
+        <span asp-validation-for="DateOfBirth"></span>
+    </div>
+
+
+    <div class="input-container">
+        <input type="hidden" asp-for="MemberImage">
+        <label asp-for="File" class="w-40">Image</label>
+        <label class="input" id="file-label" for="upload-photo">Browse images...</label>
+        <input type="file" id="upload-photo"  accept="image/*" name="File" asp-for="File">
+    </div>
+    <div class="message-box pd-x-28 error">
+        <span asp-validation-for="File"></span>
+    </div>
+    @if(ViewData["Title"]!.ToString() == "Edit"){
+        <div>
+            <img src="~/Images/@Model!.MemberImage" class="member-image">
+        </div>
+    }
+
+
+    <div class="input-container">
+        <label asp-for="MemberAbout" class="w-40">About member</label>
+        <input type="text" class="input" asp-for="MemberAbout">
+    </div>
+    <div class="message-box pd-x-28 error">
+        <span asp-validation-for="MemberAbout"></span>
+    </div>
+
+    <div class="input-container">
+        <label asp-for="MemberRole" class="w-40">Movie MemberRole</label>
+        <select class="input" asp-for="MemberRole"
+            asp-items="@(new SelectList(ViewBag.memberRoles))">
+                    <option  value="">Select role...</option>
+        </select>
+    </div>
+    <div class="message-box pd-x-28 error">
+        <span asp-validation-for="MemberRole"></span>
+    </div>
+
+    @if (ViewBag.errorMessage is not null)
+    {
+        <div class="alert mb-1">
+            @ViewBag?.errorMessage
+        </div>
+    }
+
+    <div class="input-container">
+        <button class="btn btn-default" type="submit">Save</button>
+        <a asp-action="Index" class="btn btn-sec">Back</a>
+    </div>
+</form>

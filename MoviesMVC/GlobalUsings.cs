@@ -19,3 +19,5 @@ global using MoviesMVC.Repositories.Implementations;
 global using MoviesMVC.Extensions;
 global using MoviesMVC.Registrar;
 global using MoviesMVC.Constants;
+global using MoviesMVC.Services;
+global using MoviesMVC.Helper;

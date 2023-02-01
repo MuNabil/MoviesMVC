@@ -1,0 +1,45 @@
+@model IEnumerable<Member>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+
+    <div class="tbl-container">
+        <h2>Members</h2>
+
+        <div>
+            <a href="/Members/Create" class="btn btn-default"><i class="fa fa-plus"> Add Member</i></a>
+        </div>
+
+        <table>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Date Of Birth</th>
+                <th>Role</th>
+                <th>Action</th>
+            </tr>
+            @foreach(var item in Model){
+            <tr>
+                <td>
+                    <img src="~/Images/@item.MemberImage" class="rounded-circle" style="width:40px">
+                    </td>
+                <td>@item.MemberName</td>
+                <td>@item.DateOfBirth</td>
+                <td>@item.MemberRole</td>
+                <td>
+                    <a href="/Members/Detail?id=@item.MemberId" class="btn btn-sec"><i class="fa fa-eye"></i></a>
+                    <a href="/Members/Edit?id=@item.MemberId" class="btn btn-default"><i class="fa fa-edit"></i></a>
+                    <a onclick="return window.confirm('Are you sure?')" href="/Members/Delete?id=@item.MemberId" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+            }
+        
+        </table>
+        <div class="input-container">
+            <a href="/Home/Index" class="btn btn-sec">Back</a>
+        </div>
+    </div>
+</div>

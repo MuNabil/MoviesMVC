@@ -8,6 +8,6 @@ public class MvcRegistrar : IWebApplicationBuilderRegistrar
 
         builder.Services.AddAutoMapper(typeof(Program));
 
-        builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }

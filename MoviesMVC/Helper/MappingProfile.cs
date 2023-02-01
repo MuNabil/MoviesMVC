@@ -7,6 +7,7 @@ namespace MoviesMVC.Helper
         public MappingProfile()
         {
             CreateMap<RegisterVM, AppUser>();
+            CreateMap<Member, MemberVM>().ReverseMap();
         }
     }
 }

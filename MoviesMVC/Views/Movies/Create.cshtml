@@ -1,0 +1,63 @@
+@model MovieVM
+@{
+    ViewData["Title"] = "Create";
+}
+
+<form class="w-40" asp-action="Create" method="post" enctype="multipart/form-data">
+    <h2 class="pb-10">Create Movie</h2>
+
+    <div class="input-container">
+        <label asp-for="Title" class="w-40">Movie Title</label>
+        <input type="text" class="input" asp-for="Title">
+    </div>
+    <div class="message-box pd-x-28 error">
+        <span asp-validation-for="Title"></span>
+    </div>
+
+
+    <div class="input-container">
+        <label asp-for="ReleaseYear" class="w-40">ReleaseYear</label>
+        <input type="number" class="input" asp-for="ReleaseYear">
+    </div>
+    <div class="message-box pd-x-28 error">
+        <span asp-validation-for="ReleaseYear"></span>
+    </div>
+
+
+    <div class="input-container">
+        <label asp-for="File" class="w-40">Poster </label>
+        <label class="input" id="file-label" for="upload-photo">Browse images...</label>
+        <input type="file" id="upload-photo"  accept="image/*" name="File" asp-for="File">
+    </div>
+    <div class="message-box pd-x-28 error">
+        <span asp-validation-for="File"></span>
+    </div>
+
+
+    <div class="input-container">
+        <label asp-for="Genres" class="w-40">Movie Genres</label>
+        <input type="text" placeholder="eg: Action,Drama,.." class="input" asp-for="Genres">
+    </div>
+    <div class="message-box pd-x-28 error">
+        <span asp-validation-for="Genres"></span>
+    </div>
+
+    <div class="input-container">
+        <label asp-for="Members" class="w-40">Movie Members</label>
+        <input type="text" placeholder="eg: Adam,Asmaa,.." class="input" asp-for="Members">
+    </div>
+    <div class="message-box pd-x-28 error">
+        <span asp-validation-for="Members"></span>
+    </div>
+
+    @if (ViewBag.errorMessage is not null)
+    {
+        <div class="alert mb-1">
+            @ViewBag.errorMessage
+        </div>
+    }
+
+    <div class="input-container">
+        <button class="btn btn-default" type="submit">Save</button>
+    </div>
+</form>

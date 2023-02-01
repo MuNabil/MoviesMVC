@@ -2,10 +2,10 @@ namespace MoviesMVC.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IAccountRepository _accountRepository;
-        public AccountController(IAccountRepository accountRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public AccountController(IUnitOfWork unitOfWork)
         {
-            _accountRepository = accountRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Register()
@@ -20,7 +20,8 @@ namespace MoviesMVC.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var result = await _accountRepository.RegisterAsync(model);
+            var result = await _unitOfWork.Accounts.RegisterAsync(model);
+            await _unitOfWork.Commit();
 
             if (result.StatusCode == 1) return RedirectToAction(nameof(Login));
 
@@ -40,7 +41,7 @@ namespace MoviesMVC.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var result = await _accountRepository.LoginAsync(model);
+            var result = await _unitOfWork.Accounts.LoginAsync(model);
 
             if (result.StatusCode == 1) return RedirectToAction("Index", "Home");
 
@@ -50,7 +51,7 @@ namespace MoviesMVC.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await _accountRepository.LogoutAsync();
+            await _unitOfWork.Accounts.LogoutAsync();
             return RedirectToAction(nameof(Login));
         }
     }

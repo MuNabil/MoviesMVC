@@ -1,164 +1,59 @@
+@model PagedList<Movie>
+
 @{
     ViewData["Title"] = "Index";
-    @* Layout = "_Layout"; *@
+    TempData["myterm"] = TempData["myterm"] is null ? "" : TempData["myterm"];
 }
 
 <section class="search-bar">
-    <form>
-        <input type="text" placeholder="search here">
+    <form method="get" asp-action="Index">
+        <input type="text" name="term" placeholder="search here">
         <button type="submit"><i class="fa fa-search"></i></button>
     </form>
 </section>
 <section class="movies">
-    <div class="movie-card" onclick="window.location.href='/movie-detail.html'">
-        <div class="movie-image">
-            <img src="https://picsum.photos/id/1/200/300">
+    @foreach (var movie in Model)
+    {
+            <div class="movie-card" onclick="window.location.href='/Movies/Detail?id=@movie.MovieId'">
+            <div class="movie-image">
+                <img src="/Images/@movie.Poster" style="width: 200px; object-fit: cover">
+            </div>
+            <div class="movie-info">
+                <h4>@movie.Title</h4>
+                @* <span>@movie.Genres?.ToString() </span> *@
+                @if (movie.Genres is not null)
+                {
+                    int i = 0;
+                    foreach (var genre in movie.Genres)
+                    {
+                        <span>@genre.Genre?.GenreName</span>
+                        if(i < movie.Genres.Count - 1 && i <= 2) {
+                            <span>, </span>
+                        }
+                        if (i == 2) break; ++i;
+                    }
+                }
+                <h4>@movie.ReleaseYear</h4>
+            </div>
         </div>
-        <div class="movie-info">
-            <h4>Movie 1</h4>
-            <h4>Action, Adventure</h4>
-            <h4>John doe, max </h4>
-            <h4>director 1</h4>
-        </div>
-    </div>
-
-    <div class="movie-card">
-        <div class="movie-image">
-            <img src="https://picsum.photos/id/237/200/300">
-        </div>
-        <div class="movie-info">
-            <h4>Movie 2</h4>
-            <h4>Action, Adventure</h4>
-            <h4>John doe, max </h4>
-            <h4>director 1</h4>
-        </div>
-    </div>
-
-
-    <div class="movie-card">
-        <div class="movie-image">
-            <img src="https://picsum.photos/id/237/200/300">
-        </div>
-        <div class="movie-info">
-            <h4>Movie 3</h4>
-            <h4>Action, Adventure</h4>
-            <h4>John doe, max,anna, ralph, dorian </h4>
-            <h4>director 1,director 2,director 3</h4>
-        </div>
-    </div>
-
-
-    <div class="movie-card">
-        <div class="movie-image">
-            <img src="https://picsum.photos/id/237/200/300">
-        </div>
-        <div class="movie-info">
-            <h4>Movie 2</h4>
-            <h4>Action, Adventure</h4>
-            <h4>John doe, max </h4>
-            <h4>director 1</h4>
-        </div>
-    </div>
-
-
-    <div class="movie-card">
-        <div class="movie-image">
-            <img src="https://picsum.photos/id/237/200/300">
-        </div>
-        <div class="movie-info">
-            <h4>Movie 2</h4>
-            <h4>Action, Adventure</h4>
-            <h4>John doe, max </h4>
-            <h4>director 1</h4>
-        </div>
-    </div>
-
-
-    <div class="movie-card">
-        <div class="movie-image">
-            <img src="https://picsum.photos/id/237/200/300">
-        </div>
-        <div class="movie-info">
-            <h4>Movie 2</h4>
-            <h4>Action, Adventure</h4>
-            <h4>John doe, max </h4>
-            <h4>director 1</h4>
-        </div>
-    </div>
-
-
-    <div class="movie-card">
-        <div class="movie-image">
-            <img src="https://picsum.photos/id/237/200/300">
-        </div>
-        <div class="movie-info">
-            <h4>Movie 2</h4>
-            <h4>Action, Adventure</h4>
-            <h4>John doe, max </h4>
-            <h4>director 1</h4>
-        </div>
-    </div>
-
-
-    <div class="movie-card">
-        <div class="movie-image">
-            <img src="https://picsum.photos/id/237/200/300">
-        </div>
-        <div class="movie-info">
-            <h4>Movie 2</h4>
-            <h4>Action, Adventure</h4>
-            <h4>John doe, max </h4>
-            <h4>director 1</h4>
-        </div>
-    </div>
-
-
-
-    <div class="movie-card">
-        <div class="movie-image">
-            <img src="https://picsum.photos/id/237/200/300">
-        </div>
-        <div class="movie-info">
-            <h4>Movie 2</h4>
-            <h4>Action, Adventure</h4>
-            <h4>John doe, max </h4>
-            <h4>director 1</h4>
-        </div>
-    </div>
-
-
-    <div class="movie-card">
-        <div class="movie-image">
-            <img src="https://picsum.photos/id/237/200/300">
-        </div>
-        <div class="movie-info">
-            <h4>Movie 2</h4>
-            <h4>Action, Adventure</h4>
-            <h4>John doe, max </h4>
-            <h4>director 1</h4>
-        </div>
-    </div>
-
-    <div class="movie-card">
-        <div class="movie-image">
-            <img src="https://picsum.photos/id/237/200/300">
-        </div>
-        <div class="movie-info">
-            <h4>Movie 2</h4>
-            <h4>Action, Adventure</h4>
-            <h4>John doe, max </h4>
-            <h4>director 1</h4>
-        </div>
+    }
+    <div class="input-container">
+        @if (TempData["myterm"]!.ToString() != "")
+        {
+            <a href="/Home/Index" class="btn btn-default" style="margin-left: 30px;">Show All</a>
+        }
     </div>
 </section>
 
 <div class="pagination">
-    <a href="#">&laquo;</a>
-    <a href="#">1</a>
-    <a class="active" href="#">2</a>
-    <a href="#">3</a>
-    <a href="#">4</a>
-    <a href="#">5</a>
-    <a href="#">6</a>
-    <a href="#">&raquo;</a>
+    @for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        if (i == Model.CurrentPage)
+        {
+                    <a href="/Home/Index?currentPage=@i&term=@TempData["myterm"]" class="active">@i</a>
+                }
+                else{
+                    <a href="/Home/Index?currentPage=@i&term=@TempData["myterm"]">@i</a>
+        }
+    }
 </div>

@@ -1,0 +1,117 @@
+@model EditMovieVM
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<link rel="stylesheet" href="~/css/accordion.css">
+
+<form class="w-100" asp-action="Edit" method="post" enctype="multipart/form-data">
+
+    <div class="container" id="toFit">
+        <h2>Edit @Model.Title Movie</h2>
+        <hr />
+        <div class="container" style="display: flex;  justify-content: space-between; width: 100%" id="MyCard">
+            <div style="width: 40%;">
+
+                @if (Model.Poster != null)
+                {
+                        <div style="margin-bottom: 20px;">
+                        <h3 style="margin-right: 20px;">
+                            <img src="~/Images/@Model.Poster" style="width: auto; height: 400px; object-fit: cover;" class="img-thumbnail" />
+                            <div class="input-container">
+                                <label class="input" id="file-label" style="padding: 10px 15px;" for="upload-photo">Browse images...</label>
+                                <input type="file" id="upload-photo"  accept="image/*" name="File" asp-for="File">
+                                <input type="hidden" asp-for="Poster">
+                            </div>
+                            <div class="message-box pd-x-28 error">
+                                <span asp-validation-for="File"></span>
+                            </div>
+                        </h3>
+                    </div>
+                }
+                
+            </div>
+            <div style=" width: 50%; " id="MyCard">
+
+                <div class="input-container">
+                    <input type="hidden" asp-for="MovieId">
+                    <label asp-for="Title" style="font-size: 20px;" class="w-30"><strong>Movie Title</strong></label>
+                    <input type="text" class="input" asp-for="Title">
+                </div>
+                <div class="message-box pd-x-28 error">
+                    <span asp-validation-for="Title"></span>
+                </div>
+
+                <div class="input-container">
+                    <label asp-for="ReleaseYear" style="font-size: 20px;" class="w-30"><strong>Release Year</strong></label>
+                    <input type="number" class="input" asp-for="ReleaseYear">
+                </div>
+                <div class="message-box pd-x-28 error">
+                    <span asp-validation-for="ReleaseYear"></span>
+                </div>
+
+                @* Geres accordion *@
+                <button type="button" class="accordion" style="margin-top: 10px; font-size: 20px; font-family: Spectral, serif;"><strong>Genres</strong></button>
+                <div class="panel">
+                    @if (Model.Genres is not null)
+                    {
+                        @for (var i = 0; i < Model.Genres.Count; i++)
+                        {
+                            <input type="hidden" asp-for="@Model.Genres[i].ItemId" />
+                            <input type="hidden" asp-for="@Model.Genres[i].ItemName" />
+                            <label asp-for="@Model.Genres[i].IsSelected">
+                                <input type="checkbox" asp-for="@Model.Genres[i].IsSelected">  @Model.Genres[i].ItemName
+                            </label>
+                        }
+                    }
+                    else { <p>No Genre here...</p> }
+                </div>
+                <div class="message-box pd-x-28 error">
+                    <span asp-validation-for="Genres"></span>
+                </div>
+
+                @* Members accordion *@
+                <button type="button" class="accordion" style="margin-top: 10px; font-size: 20px; font-family: Spectral, serif;"><strong>Cast</strong></button>
+                <div class="panel">
+                    @if (Model.Members is not null)
+                    {
+                        @for (var i = 0; i < Model.Members.Count; i++)
+                        {
+                            <input type="hidden" asp-for="@Model.Members[i].ItemId" />
+                            <input type="hidden" asp-for="@Model.Members[i].ItemName" />
+                            <input type="hidden" asp-for="@Model.Members[i].ItemImage" />
+                            <label asp-for="@Model.Members[i].IsSelected" style="margin: 3% 0;">
+                                <input type="checkbox" asp-for="@Model.Members[i].IsSelected"> 
+                                <img src="~/Images/@Model.Members[i].ItemImage" style="width:30px; border-radius: 30%; margin: 0 5%;"> 
+                                @Model.Members[i].ItemName
+                            </label>
+                        }
+                    }
+                    else { <p>No Genre here...</p> }
+                </div>
+                <div class="message-box pd-x-28 error">
+                    <span asp-validation-for="Genres"></span>
+                </div>
+
+                
+            </div>
+        </div>
+
+        @if (ViewBag.errorMessage is not null)
+        {
+            <div class="alert mb-1">
+                @ViewBag.errorMessage
+            </div>
+        }
+
+    </div>
+
+    <div>
+        <button class="btn btn-default" type="submit">Save</button>
+        <a asp-action="Index" class="btn btn-sec">Back</a>
+    </div>
+
+</form>
+
+<script src="~/js/accordion.js"></script>

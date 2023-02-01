@@ -9,12 +9,12 @@ namespace MoviesMVC.Repositories.Implementations
             _context = context;
         }
 
-        public async Task<int> Count()
+        public async Task<int> CountAsync()
         {
             return await _context.Set<T>().CountAsync();
         }
 
-        public async Task<int> Count(Expression<Func<T, bool>> criteria)
+        public async Task<int> CountAsync(Expression<Func<T, bool>> criteria)
         {
             return await _context.Set<T>().CountAsync(criteria);
         }
@@ -24,7 +24,12 @@ namespace MoviesMVC.Repositories.Implementations
             _context.Set<T>().Remove(entity);
         }
 
-        public async Task<T?> Find(Expression<Func<T, bool>> criteria, string[]? includes = null)
+        public void DeleteRange(IEnumerable<T> entities)
+        {
+            _context.Set<T>().RemoveRange(entities);
+        }
+
+        public async Task<T?> FindAsync(Expression<Func<T, bool>> criteria, string[]? includes = null)
         {
             IQueryable<T> query = TableWithInclude(includes);
 
@@ -32,7 +37,7 @@ namespace MoviesMVC.Repositories.Implementations
             return await query.FirstOrDefaultAsync(criteria);
         }
 
-        public async Task<IEnumerable<T>?> FindAll(Expression<Func<T, bool>> criteria,
+        public async Task<IEnumerable<T>?> FindAllAsync(Expression<Func<T, bool>> criteria,
             string[]? includes = null, int? skip = null, int? take = null,
             Expression<Func<T, object>>? orderBy = null, string orderByDirection = OrderBy.Ascending)
         {
@@ -58,25 +63,38 @@ namespace MoviesMVC.Repositories.Implementations
             return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<T>?> GetAll(string[]? includes = null)
+        public async Task<IEnumerable<T>?> GetAllAsync(string[]? includes = null)
         {
             IQueryable<T> query = TableWithInclude(includes);
 
             return await query.ToListAsync();
         }
 
-        public async Task<T?> GetById(int? id)
+        public async Task<T?> GetByIdAsync(int? id)
         {
             return await _context.Set<T>().FindAsync(id);
         }
 
-        public async Task Add(T entity)
+        public async Task AddAsync(T entity)
         {
             await _context.Set<T>().AddAsync(entity);
         }
+
+        public async Task AddRangeAsync(IEnumerable<T> entities)
+        {
+            await _context.Set<T>().AddRangeAsync(entities);
+        }
+
         public void Update(T entity)
         {
             _context.Set<T>().Update(entity);
+        }
+
+        public async Task<PagedList<T>> GetPageListAsync(PaginationParams pageInfo, Expression<Func<T, bool>> criteria, string[]? includes = null)
+        {
+            IQueryable<T> query = TableWithInclude(includes).AsNoTracking();
+            query = query.Where(criteria);
+            return await PagedList<T>.CreateAsync(query, pageInfo.PageNumber, pageInfo.PageSize);
         }
 
         private IQueryable<T> TableWithInclude(string[]? includes)

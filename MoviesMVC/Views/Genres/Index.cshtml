@@ -1,0 +1,34 @@
+@model IEnumerable<Genre>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <partial name="_CreateGenre" model="new ItemVM()" />
+    <hr style="width:50%;text-align:left;margin-left:0; margin-top:10px; margin-bottom: 15px;"> 
+
+    <div class="tbl-container">
+        <h2>Genres</h2>
+
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Action</th>
+            </tr>
+            @foreach(var item in Model){
+            <tr>
+                <td>@item.GenreName</td>
+                <td>
+                    @* <a href="/Genres/Edit?id=@item.GenreId" class="btn btn-default"><i class="fa fa-edit"></i></a> *@
+                    <a onclick="return window.confirm('Are you sure?')" href="/Genres/Delete?id=@item.GenreId" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+            }
+        
+        </table>
+        <div class="input-container">
+            <a href="/Home/Index" class="btn btn-sec">Back</a>
+        </div>
+    </div>
+</div>

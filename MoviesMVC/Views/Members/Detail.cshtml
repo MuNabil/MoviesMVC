@@ -1,0 +1,53 @@
+@model Member
+
+@{
+    ViewData["Title"] = "Detail";
+}
+
+
+<div class="container">
+    <h2>Member Detail</h2>
+    <hr />
+    <div class="container" style="display: flex;">
+        <div>
+            @if (Model.MemberImage != null)
+            {
+                <div style="margin-bottom: 20px;">
+                <h3 style="margin-right: 20px;">
+                    <img src="~/Images/@Model.MemberImage" style="width: auto; height: 270px; object-fit: cover;" class="img-thumbnail" />
+                </h3> 
+            </div>
+            }
+        </div>
+        <div>
+            @* <dt style="margin-bottom: 20px;">
+                @Html.DisplayNameFor(model => model.MemberId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.MemberId)
+            </dd> *@
+            <div style="margin-bottom: 20px;">
+                <h3 style="margin-right: 20px;">Name: <span style="margin-left: 15px;">@Model.MemberName</span></h3> 
+            </div>
+            <div style="margin-bottom: 20px;">
+                <h3 style="margin-right: 20px;">Member About: <span style="margin-left: 15px;"><i>@Model.MemberAbout</i></span></h3> 
+            </div>
+            <div style="margin-bottom: 20px;">
+                <h3 style="margin-right: 20px;">Date Of Birth: <span style="margin-left: 15px;"><i>@Model.DateOfBirth</i></span></h3> 
+            </div>
+            <div>
+                <h3 style="margin-right: 20px;">Member Role: <span style="margin-left: 15px;"><i>@Model.MemberRole</i></span></h3> 
+            </div>
+            @* <dt style="margin-bottom: 20px;">
+                @Html.DisplayNameFor(model => model.Author.FullName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Author.FullName)
+            </dd> *@
+        </div>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.MemberId" class="btn btn-default">Edit</a>
+        <a asp-action="Index" class="btn btn-sec">Back</a>
+    </div>
+</div>

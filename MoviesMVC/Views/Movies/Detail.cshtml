@@ -1,0 +1,101 @@
+@model Movie
+
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<link rel="stylesheet" href="~/css/tabs.css">
+
+
+<div class="container" id="toFit">
+    <h2>Movie Detail</h2>
+    <hr />
+    <div class="container" style="display: flex;  justify-content: space-between; width: 100%" id="MyCard">
+        <div>
+            @if (Model.Poster != null)
+            {
+                    <div style="margin-bottom: 20px;">
+                    <h3 style="margin-right: 20px;">
+                        <img src="~/Images/@Model.Poster" style="width: auto; height: 400px; object-fit: cover;" class="img-thumbnail" />
+                    </h3> 
+                </div>
+            }
+        </div>
+        <div style=" width: 70%; " id="MyCard">
+            <div class="tab">
+                <button class="tablinks" onclick="openTabFor(event, 'movieDetail')" id="defaultOpen">Detail</button>
+                <button class="tablinks" onclick="openTabFor(event, 'movieMembers')">Cast</button>
+            </div>
+            <div id="movieDetail" class="tabcontent">
+                <div>
+
+                    <div>
+                        <h2 style="text-align: center;">@Model.Title</h2> 
+                    </div>
+                    <hr style="margin: 2vh 2vw;">
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="margin-right: 20px;">Release year: <span style="margin-left: 15px;"><i>@Model.ReleaseYear</i></span></h3> 
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="margin-right: 20px;">Genres: <span style="margin-left: 15px;"><i>
+                                    @if (Model.Genres is not null)
+                                    {
+                                        int i = 0;
+                                        foreach (var genre in Model.Genres)
+                                        {
+                                            <span>@genre.Genre?.GenreName</span>
+                                            if (i < Model.Genres.Count - 1)
+                                            {
+                                                    <span>, </span>
+                                            }
+                                            ++i;
+                                        }
+                                    }
+                        </i></span></h3> 
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="movieMembers" class="tabcontent">
+                <div>
+                    <div class="tbl-container">
+                        <h2 style="text-align: center;">Cast</h2>
+                        <hr>
+                        <table>
+                            @* <tr>
+                                <th>Image</th>
+                                <th>Role</th>
+                                <th>Name</th>
+                            </tr> *@
+                            @if (Model.Members is not null)
+                            {
+                                @foreach (var movieMember in Model.Members)
+                                {
+                                            <tr style="cursor: pointer;" 
+                                                onclick="window.location.href='/Members/Detail?id=@movieMember.Member?.MemberId'">
+                                                <td>
+                                                    <img src="~/Images/@movieMember.Member!.MemberImage" class="rounded-circle" style="width:40px">
+                                                </td>
+                                                <td>@movieMember.Member.MemberRole</td>
+                                                <td>@movieMember.Member.MemberName</td>
+                                            </tr>
+                                }
+                            }
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.MovieId" class="btn btn-default">Edit</a>
+    <a asp-action="Index" class="btn btn-sec">Back</a>
+</div>
+
+<script src="~/js/tabs.js"></script>

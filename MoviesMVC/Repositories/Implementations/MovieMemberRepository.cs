@@ -48,22 +48,10 @@ namespace MoviesMVC.Repositories.Implementations
             });
         }
 
-        public async Task AddMovieMembersStringAsync(string members, int movieId)
+        public async Task AddMovieMembersAsync(IEnumerable<CheckboxVM>? allMovieMembers, int movieId)
         {
-            bool hadDirector = false;
-            foreach (var memberName in members.Split(',').Distinct())
-            {
-                var member = await _context.Members!.FirstOrDefaultAsync(m => m.MemberName.ToLower() == memberName.Trim().ToLower());
-                if (member is not null)
-                {
-                    if (member.MemberRole == MemberRoles.Director && hadDirector) continue;
-                    else
-                    {
-                        if (member.MemberRole == MemberRoles.Director) hadDirector = true;
-                        await _context.MovieMembers!.AddAsync(new MovieMember { MovieId = movieId, MemberId = member.MemberId });
-                    }
-                }
-            }
+            await _context.MovieMembers!.AddRangeAsync(allMovieMembers!.Where(x => x.IsSelected)
+                .Select(x => new MovieMember { MemberId = x.ItemId, MovieId = movieId }));
         }
     }
 }

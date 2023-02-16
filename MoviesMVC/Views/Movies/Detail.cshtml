@@ -8,6 +8,13 @@
 
 
 <div class="container" id="toFit">
+    <div>
+        <a asp-controller="Orders" asp-action="Order" asp-route-movieId="@Model.MovieId" class="btn btn-default">Order To Watch</a>
+        @* @if(TempData["OrderExist"] is not null){
+            <span class="ml-2" style="background-color: rgb(174, 241, 222);">@TempData["OrderExist"]</span>
+        } *@
+    </div>
+    <br>
     <h2>Movie Detail</h2>
     <hr />
     <div class="container" style="display: flex;  justify-content: space-between; width: 100%" id="MyCard">

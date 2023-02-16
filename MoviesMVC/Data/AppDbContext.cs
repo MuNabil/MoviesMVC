@@ -11,6 +11,7 @@ namespace MoviesMVC.Data
         public DbSet<Member>? Members { get; set; }
         public DbSet<MovieGenre>? MovieGenres { get; set; }
         public DbSet<MovieMember>? MovieMembers { get; set; }
+        public DbSet<Order>? Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -41,6 +42,21 @@ namespace MoviesMVC.Data
               .HasOne(x => x.Movie)
               .WithMany(x => x.Members)
               .OnDelete(DeleteBehavior.Cascade);
+
+
+            builder.Entity<Order>()
+              .HasKey(x => new { x.MovieId, x.UserId });
+
+            builder.Entity<Order>()
+              .HasOne(x => x.User)
+              .WithMany(x => x.Orders)
+              .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Order>()
+              .HasOne(x => x.Movie)
+              .WithMany(x => x.Orders)
+              .OnDelete(DeleteBehavior.Cascade);
+
         }
 
     }

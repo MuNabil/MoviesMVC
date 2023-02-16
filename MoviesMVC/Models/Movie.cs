@@ -17,6 +17,7 @@ namespace MoviesMVC.Models
         public ICollection<MovieGenre>? Genres { get; set; }
 
         public ICollection<MovieMember>? Members { get; set; }
+        public ICollection<Order>? Orders { get; set; }
 
     }
 }

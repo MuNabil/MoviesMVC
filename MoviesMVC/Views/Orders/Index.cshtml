@@ -1,0 +1,103 @@
+@model FilterOrderVM
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<link rel="stylesheet" href="~/css/tabs.css">
+
+<div class="container">
+
+
+    <div class="tab">
+        <button class="tablinks" onclick="openTabFor(event, 'movieDetail')" id="defaultOpen">Non-Approved Orders</button>
+        <button class="tablinks" onclick="openTabFor(event, 'movieMembers')">All Orders</button>
+        </div>
+        <div id="movieDetail" class="tabcontent">
+            <div class="tbl-container">
+                <h2>Orders</h2>
+
+                <table>
+                    <tr>
+                        <th>Movie Poster</th>
+                        <th>Title</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Order Date</th>
+                        <th>Action</th>
+                    </tr>
+                @foreach (var item in Model.NonApprovedOrders!)
+                {
+                                <tr>
+                                    <td>
+                                        <img src="~/Images/@item.MoviePoster" class="rounded-circle" style="width:40px">
+                                        </td>
+                                    <td>@item.MovieTitle</td>
+                                    <td>@item.UserName</td>
+                                    <td>@item.UserEmail</td>
+                                    <td>@item.OrderDate</td>
+                                    <td>
+                                        <a href="/Orders/ApproveOrder?movieId=@item.MovieId&userId=@item.UserId" class="btn btn-default">Approve</a>
+                                    </td>
+                                </tr>
+                }
+
+                </table>
+            @if (TempData["errorMessage"] is not null)
+            {
+                                <div class="alert mb-1">
+                    @TempData["errorMessage"]
+                                </div>
+            }
+                <div class="input-container">
+                    <a href="/Home/Index" class="btn btn-sec">Back</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="movieMembers" class="tabcontent">
+            <div class="tbl-container">
+                <h2>Orders</h2>
+
+                <table>
+                    <tr>
+                        <th>Movie Poster</th>
+                        <th>Title</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Order Date</th>
+                    </tr>
+                @foreach (var item in Model.AllOrders!)
+                {
+                                <tr>
+                                    <td>
+                                        <img src="~/Images/@item.MoviePoster" class="rounded-circle" style="width:40px">
+                                        </td>
+                                    <td>@item.MovieTitle</td>
+                                    <td>@item.UserName</td>
+                                    <td>@item.UserEmail</td>
+                                    <td>@item.OrderDate</td>
+                                </tr>
+                }
+
+                </table>
+            @if (TempData["errorMessage"] is not null)
+            {
+                                    <div class="alert mb-1">
+                    @TempData["errorMessage"]
+                                    </div>
+            }
+                <div class="input-container">
+                    <a href="/Home/Index" class="btn btn-sec">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+<script src="~/js/tabs.js"></script>

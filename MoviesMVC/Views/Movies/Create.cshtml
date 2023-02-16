@@ -1,7 +1,9 @@
-@model MovieVM
+@model EditMovieVM
 @{
     ViewData["Title"] = "Create";
 }
+
+<link rel="stylesheet" href="~/css/accordion.css">
 
 <form class="w-40" asp-action="Create" method="post" enctype="multipart/form-data">
     <h2 class="pb-10">Create Movie</h2>
@@ -34,17 +36,44 @@
     </div>
 
 
-    <div class="input-container">
-        <label asp-for="Genres" class="w-40">Movie Genres</label>
-        <input type="text" placeholder="eg: Action,Drama,.." class="input" asp-for="Genres">
+    @* Geres accordion *@
+    <button type="button" class="accordion" style="margin-top: 10px; font-size: 20px; font-family: Spectral, serif;"><strong>Add Genres</strong></button>
+    <div class="panel">
+        @if (Model.Genres is not null)
+        {
+            @for (var i = 0; i < Model.Genres.Count; i++)
+            {
+                <input type="hidden" asp-for="@Model.Genres[i].ItemId" />
+                <input type="hidden" asp-for="@Model.Genres[i].ItemName" />
+                <label asp-for="@Model.Genres[i].IsSelected">
+                    <input type="checkbox" asp-for="@Model.Genres[i].IsSelected">  @Model.Genres[i].ItemName
+                </label>
+            }
+        }
+        else { <p>No Genre here...</p> }
     </div>
     <div class="message-box pd-x-28 error">
         <span asp-validation-for="Genres"></span>
     </div>
 
-    <div class="input-container">
-        <label asp-for="Members" class="w-40">Movie Members</label>
-        <input type="text" placeholder="eg: Adam,Asmaa,.." class="input" asp-for="Members">
+    @* Members accordion *@
+    <button type="button" class="accordion" style="margin-top: 10px; font-size: 20px; font-family: Spectral, serif;"><strong>Add Members</strong></button>
+    <div class="panel">
+        @if (Model.Members is not null)
+        {
+            @for (var i = 0; i < Model.Members.Count; i++)
+            {
+                <input type="hidden" asp-for="@Model.Members[i].ItemId" />
+                <input type="hidden" asp-for="@Model.Members[i].ItemName" />
+                <input type="hidden" asp-for="@Model.Members[i].ItemImage" />
+                <label asp-for="@Model.Members[i].IsSelected" style="margin: 3% 0;">
+                    <input type="checkbox" asp-for="@Model.Members[i].IsSelected"> 
+                    <img src="~/Images/@Model.Members[i].ItemImage" style="width:30px; border-radius: 30%; margin: 0 5%;"> 
+                    @Model.Members[i].ItemName
+                </label>
+            }
+        }
+        else { <p>No Member here...</p> }
     </div>
     <div class="message-box pd-x-28 error">
         <span asp-validation-for="Members"></span>
@@ -61,3 +90,5 @@
         <button class="btn btn-default" type="submit">Save</button>
     </div>
 </form>
+
+<script src="~/js/accordion.js"></script>

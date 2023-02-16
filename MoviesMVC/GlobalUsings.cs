@@ -9,6 +9,7 @@ global using Microsoft.AspNetCore.Identity;
 global using System.ComponentModel.DataAnnotations;
 global using AutoMapper;
 global using System.Linq.Expressions;
+global using Microsoft.AspNetCore.Authorization;
 
 
 global using MoviesMVC.Models;

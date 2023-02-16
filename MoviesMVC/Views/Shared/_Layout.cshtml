@@ -27,6 +27,7 @@
                 @if (!string.IsNullOrEmpty(User.GetEmail()))
                 {
                     <li><a class="active" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a class="active" asp-controller="Orders" asp-action="UserOrders">My Orders</a></li>
                     <li><a href="/Home/About">About</a></li>
                         @if (User.IsInRole("Admin"))
                         {
@@ -36,7 +37,7 @@
                                     <li><a href="/Genres/Index">Genres</a></li>
                                     <li><a asp-controller="Members" asp-action="Index">Members</a></li>
                                     <li><a href="/Movies/Index">Manage movies</a></li>
-                                    <li><a href="#">Link 4</a></li>
+                                    <li><a asp-controller="Orders" asp-action="Index">Maanage Orders</a></li>
                                 </ul>
                             </li>
                         }

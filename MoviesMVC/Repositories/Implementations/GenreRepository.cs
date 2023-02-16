@@ -8,5 +8,7 @@ namespace MoviesMVC.Repositories.Implementations
     public class GenreRepository : GenericRepository<Genre>, IGenreRepository
     {
         public GenreRepository(AppDbContext context) : base(context) { }
+
+
     }
 }

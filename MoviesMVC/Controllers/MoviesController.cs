@@ -1,5 +1,7 @@
+using System.Security.AccessControl;
 namespace MoviesMVC.Controllers
 {
+    [Authorize]
     public class MoviesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -10,12 +12,13 @@ namespace MoviesMVC.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(int currentPage = 1, string term = "")
         {
             PaginationParams info = new PaginationParams
             {
                 PageNumber = currentPage,
-                PageSize = 1
+                PageSize = 9
             };
             if (string.IsNullOrEmpty(term)) term = "";
             TempData["term"] = term;
@@ -31,6 +34,7 @@ namespace MoviesMVC.Controllers
             return View(movies);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var movie = await _unitOfWork.Movies.GetByIdAsync(id);
@@ -45,17 +49,21 @@ namespace MoviesMVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
-
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            return View(new MovieVM());
+            var model = new EditMovieVM()
+            {
+                Genres = _unitOfWork.Genres.GetAllAsync().Result!.Select(g => new CheckboxVM { ItemId = g.GenreId, ItemName = g.GenreName }).ToList(),
+                Members = _unitOfWork.Members.GetAllAsync().Result!.Select(m => new CheckboxVM { ItemId = m.MemberId, ItemName = m.MemberName, ItemImage = m.MemberImage! }).ToList()
+            };
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(MovieVM model)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Create(EditMovieVM model)
         {
             if (!ModelState.IsValid)
                 return View(model);
@@ -76,21 +84,18 @@ namespace MoviesMVC.Controllers
 
             movie.Poster = ImageService.NewImageUrl(model.File);
 
-
             await _unitOfWork.Movies.AddAsync(movie);
             await _unitOfWork.Commit();
 
-            // var movieWithId = await _unitOfWork.Movies.Find(m => m.Title == movie.Title);
+            await _unitOfWork.MovieGenres.AddMovieGenresAsync(model.Genres, movie.MovieId);
+            await _unitOfWork.MovieMembers.AddMovieMembersAsync(model.Members, movie.MovieId);
 
-            await _unitOfWork.MovieGenres.AddMovieGenresStringAsync(model.Genres, movie.MovieId);
-
-            await _unitOfWork.MovieMembers.AddMovieMembersStringAsync(model.Members, movie.MovieId);
-
-            if (_unitOfWork.HasChanges()) await _unitOfWork.Commit();
+            await _unitOfWork.Commit();
 
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var movie = await _unitOfWork.Movies.FindAsync(m => m.MovieId == id, new[] { "Genres.Genre", "Members.Member" });
@@ -101,6 +106,7 @@ namespace MoviesMVC.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(EditMovieVM model)

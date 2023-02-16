@@ -9,7 +9,7 @@
     <div class="tbl-container">
         <h2>Orders</h2>
 
-        <table>
+        <table id="table3">
             <tr>
                 <th>Image</th>
                 <th>Title</th>
@@ -20,7 +20,7 @@
             @foreach(var movie in Model){
             <tr>
                 <td>
-                    <img src="~/Images/@movie.Poster" class="rounded-circle" style="width:40px">
+                    <img src="~/Images/@movie!.Poster" class="rounded-circle" style="width:40px">
                     </td>
                 <td>@movie.Title</td>
                 <td>@movie.ReleaseYear</td>
@@ -60,3 +60,6 @@
         </div>
     </div>
 </div>
+
+<script src="~/js/signalr.js"></script>
+<script src="~/js/order.js"></script>

@@ -6,8 +6,10 @@ namespace MoviesMVC.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public MoviesController(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IHubContext<MovieHub> _movieHub;
+        public MoviesController(IUnitOfWork unitOfWork, IMapper mapper, IHubContext<MovieHub> movieHub)
         {
+            _movieHub = movieHub;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
@@ -42,6 +44,8 @@ namespace MoviesMVC.Controllers
             {
                 _unitOfWork.Movies.Delete(movie);
                 await _unitOfWork.Commit();
+
+                await _movieHub.Clients.All.SendAsync("MovieDeleted", id);
             }
 
             else ViewBag.CreateError = "Please Try again.!";
@@ -92,7 +96,11 @@ namespace MoviesMVC.Controllers
 
             await _unitOfWork.Commit();
 
-            return RedirectToAction("Index", "Home");
+            await _movieHub.Clients.All.SendAsync("NewMovieAdded", movie.Poster, movie.Title, movie.ReleaseYear, movie.MovieId,
+                model.Genres!.Where(x => x.IsSelected).Select(x => x.ItemName).ToList(),
+                model.Members!.Where(x => x.IsSelected).Select(x => x.ItemName).ToList());
+
+            return RedirectToAction(nameof(Index));
         }
 
         [Authorize(Roles = "Admin")]

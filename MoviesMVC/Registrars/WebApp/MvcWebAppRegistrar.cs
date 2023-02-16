@@ -21,5 +21,8 @@ public class MvcWebAppRegistrar : IWebApplicationRegistrar
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
 
+        app.MapHub<OrderHub>("/hubs/order");
+        app.MapHub<MovieHub>("/hubs/movie");
+
     }
 }

@@ -10,6 +10,7 @@ global using System.ComponentModel.DataAnnotations;
 global using AutoMapper;
 global using System.Linq.Expressions;
 global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.SignalR;
 
 
 global using MoviesMVC.Models;
@@ -22,3 +23,4 @@ global using MoviesMVC.Registrar;
 global using MoviesMVC.Constants;
 global using MoviesMVC.Services;
 global using MoviesMVC.Helper;
+global using MoviesMVC.Hubs;

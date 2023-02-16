@@ -1,5 +1,6 @@
 namespace MoviesMVC.Controllers
 {
+    [Authorize]
     public class GenresController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -16,6 +17,7 @@ namespace MoviesMVC.Controllers
             return View(genres);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ItemVM model)
@@ -39,6 +41,7 @@ namespace MoviesMVC.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var genre = await _unitOfWork.Genres.GetByIdAsync(id);

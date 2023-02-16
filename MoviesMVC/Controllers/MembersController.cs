@@ -1,5 +1,6 @@
 namespace MoviesMVC.Controllers
 {
+    [Authorize]
     public class MembersController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -16,11 +17,13 @@ namespace MoviesMVC.Controllers
             return View(members);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return GoToCreateView(new MemberVM());
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MemberVM model)
@@ -44,6 +47,7 @@ namespace MoviesMVC.Controllers
             return GoToCreateView(model, "Please Try again.!");
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var member = await _unitOfWork.Members.GetByIdAsync(id);
@@ -64,6 +68,7 @@ namespace MoviesMVC.Controllers
             return View(member);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var member = await _unitOfWork.Members.GetByIdAsync(id);
@@ -72,6 +77,7 @@ namespace MoviesMVC.Controllers
             return GoToCreateView(_mapper.Map<MemberVM>(member));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(MemberVM model)

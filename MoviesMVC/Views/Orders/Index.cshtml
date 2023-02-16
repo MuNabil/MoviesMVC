@@ -17,7 +17,7 @@
             <div class="tbl-container">
                 <h2>Orders</h2>
 
-                <table>
+                <table id="tblData1">
                     <tr>
                         <th>Movie Poster</th>
                         <th>Title</th>
@@ -28,26 +28,26 @@
                     </tr>
                 @foreach (var item in Model.NonApprovedOrders!)
                 {
-                                <tr>
-                                    <td>
-                                        <img src="~/Images/@item.MoviePoster" class="rounded-circle" style="width:40px">
-                                        </td>
-                                    <td>@item.MovieTitle</td>
-                                    <td>@item.UserName</td>
-                                    <td>@item.UserEmail</td>
-                                    <td>@item.OrderDate</td>
-                                    <td>
-                                        <a href="/Orders/ApproveOrder?movieId=@item.MovieId&userId=@item.UserId" class="btn btn-default">Approve</a>
-                                    </td>
-                                </tr>
+                        <tr>
+                            <td>
+                                <img src="~/Images/@item.MoviePoster" class="rounded-circle" style="width:40px">
+                                </td>
+                            <td>@item.MovieTitle</td>
+                            <td>@item.UserName</td>
+                            <td>@item.UserEmail</td>
+                            <td>@item.OrderDate</td>
+                            <td>
+                                <a href="/Orders/ApproveOrder?movieId=@item.MovieId&userId=@item.UserId" class="btn btn-default">Approve</a>
+                            </td>
+                        </tr>
                 }
 
                 </table>
             @if (TempData["errorMessage"] is not null)
             {
-                                <div class="alert mb-1">
+                                                        <div class="alert mb-1">
                     @TempData["errorMessage"]
-                                </div>
+                                                        </div>
             }
                 <div class="input-container">
                     <a href="/Home/Index" class="btn btn-sec">Back</a>
@@ -60,7 +60,7 @@
             <div class="tbl-container">
                 <h2>Orders</h2>
 
-                <table>
+                <table id="tblData2">
                     <tr>
                         <th>Movie Poster</th>
                         <th>Title</th>
@@ -70,23 +70,23 @@
                     </tr>
                 @foreach (var item in Model.AllOrders!)
                 {
-                                <tr>
-                                    <td>
-                                        <img src="~/Images/@item.MoviePoster" class="rounded-circle" style="width:40px">
-                                        </td>
-                                    <td>@item.MovieTitle</td>
-                                    <td>@item.UserName</td>
-                                    <td>@item.UserEmail</td>
-                                    <td>@item.OrderDate</td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    <img src="~/Images/@item.MoviePoster" class="rounded-circle" style="width:40px">
+                                </td>
+                                <td>@item.MovieTitle</td>
+                                <td>@item.UserName</td>
+                                <td>@item.UserEmail</td>
+                                <td>@item.OrderDate</td>
+                            </tr>
                 }
 
                 </table>
             @if (TempData["errorMessage"] is not null)
             {
-                                    <div class="alert mb-1">
+                                                            <div class="alert mb-1">
                     @TempData["errorMessage"]
-                                    </div>
+                                                            </div>
             }
                 <div class="input-container">
                     <a href="/Home/Index" class="btn btn-sec">Back</a>
@@ -101,3 +101,5 @@
 </div>
 
 <script src="~/js/tabs.js"></script>
+<script src="~/js/signalr.js"></script>
+<script src="~/js/order.js"></script>

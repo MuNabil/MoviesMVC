@@ -11,12 +11,12 @@
         <button type="submit"><i class="fa fa-search"></i></button>
     </form>
 </section>
-<section class="movies">
+<section class="movies" id="moviesCard">
     @foreach (var movie in Model)
     {
-            <div class="movie-card" onclick="window.location.href='/Movies/Detail?id=@movie.MovieId'">
+        <div id="@movie.MovieId" class="movie-card" onclick="window.location.href='/Movies/Detail?id=@movie.MovieId'">
             <div class="movie-image">
-                <img src="/Images/@movie.Poster" style="width: 200px; object-fit: cover">
+                <img src="~/Images/@movie.Poster" style="width: 200px; object-fit: cover">
             </div>
             <div class="movie-info">
                 <h4>@movie.Title</h4>
@@ -27,7 +27,7 @@
                     foreach (var genre in movie.Genres)
                     {
                         <span>@genre.Genre?.GenreName</span>
-                        if(i < movie.Genres.Count - 1 && i <= 2) {
+                        if(i < movie.Genres.Count - 1 && i < 2) {
                             <span>, </span>
                         }
                         if (i == 2) break; ++i;
@@ -57,3 +57,6 @@
         }
     }
 </div>
+
+<script src="~/js/signalr.js"></script>
+<script src="~/js/movie.js"></script>

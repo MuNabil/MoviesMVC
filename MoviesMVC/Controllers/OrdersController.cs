@@ -4,17 +4,19 @@ namespace MoviesMVC.Controllers
     public class OrdersController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public OrdersController(IUnitOfWork unitOfWork)
+        private readonly IHubContext<OrderHub> _orderHub;
+        public OrdersController(IUnitOfWork unitOfWork, IHubContext<OrderHub> orderHub)
         {
             _unitOfWork = unitOfWork;
+            _orderHub = orderHub;
         }
 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             IEnumerable<Order>? orders = await _unitOfWork.Orders.GetAllAsync(new[] { "Movie", "User" });
-            IEnumerable<OrderVM>? nonApprovedOrders = FillOrderVM(orders.Where(x => !x.IsApproved));
-            IEnumerable<OrderVM>? allOrders = FillOrderVM(orders);
+            IEnumerable<OrderVM>? nonApprovedOrders = FillOrderVM(orders!.Where(x => !x.IsApproved));
+            IEnumerable<OrderVM>? allOrders = FillOrderVM(orders!);
             FilterOrderVM model = new()
             {
                 AllOrders = allOrders,
@@ -47,6 +49,14 @@ namespace MoviesMVC.Controllers
             order.IsApproved = true;
             order.ApprovedDate = DateTime.Now;
             await _unitOfWork.Commit();
+
+            var movie = await _unitOfWork.Movies.FindAsync(x => x.MovieId == movieId, new[] { "Genres.Genre", "Members.Member" });
+
+            await _orderHub.Clients.User(userId)
+                .SendAsync("OrderApproved", movie!.Poster, movie.Title, movie.ReleaseYear,
+                 movie.Genres!.Select(x => x.Genre!.GenreName).ToList(),
+                  movie.Members!.Select(x => x.Member!.MemberName).ToList());
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -56,14 +66,19 @@ namespace MoviesMVC.Controllers
             if (await _unitOfWork.Orders.GetOrderByIdAsync(movieId, user!.Id) is not null)
                 return RedirectToAction("Index", "Home");
 
-            await _unitOfWork.Orders.AddAsync(new Order
+            var order = new Order
             {
                 MovieId = movieId,
                 UserId = user!.Id,
                 OrderDate = DateTime.Now
-            });
+            };
+            var movie = await _unitOfWork.Movies.GetByIdAsync(movieId);
+            await _unitOfWork.Orders.AddAsync(order);
 
             await _unitOfWork.Commit();
+
+            await _orderHub.Clients.User(_unitOfWork.Users.FindAsync(u => u.Email.ToLower() == "admin@test.com").Result!.Id)
+                .SendAsync("NewOrderPlaced", movie!.Poster, movie.Title, user.Name, user.Email, order.OrderDate, movieId, user.Id);
 
             return RedirectToAction("Index", "Home");
         }

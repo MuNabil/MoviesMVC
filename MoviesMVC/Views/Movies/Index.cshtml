@@ -21,7 +21,7 @@
             <a href="/Movies/Create" class="btn btn-default"><i class="fa fa-plus"> Add Movie</i></a>
         </div>
 
-        <table>
+        <table id="tblMovies">
             <tr>
                 <th>Image</th>
                 <th>Title</th>
@@ -30,7 +30,7 @@
                 <th>Members</th>
             </tr>
             @foreach(var movie in Model){
-            <tr>
+            <tr id="@movie.MovieId">
                 <td>
                     <img src="~/Images/@movie.Poster" class="rounded-circle" style="width:40px">
                     </td>
@@ -42,7 +42,7 @@
                         foreach (var genre in movie.Genres)
                         {
                             <span>@genre.Genre?.GenreName</span>
-                            if(i < movie.Genres.Count - 1 && i <= 2) {
+                            if(i < movie.Genres.Count - 1 && i < 2) {
                                 <span>, </span>
                             }
                             if(i == 2) break; ++i;
@@ -55,7 +55,7 @@
                         foreach (var genre in movie.Members)
                         {
                             <span>@genre.Member?.MemberName  </span>
-                            if(i < movie.Members.Count - 1 && i <= 2) {
+                            if(i < movie.Members.Count - 1 && i < 2) {
                                 <span>, </span>
                             }
                             if(i == 2) break; ++i;
@@ -91,3 +91,6 @@
         }
     }
 </div>
+
+<script src="~/js/signalr.js"></script>
+<script src="~/js/movie.js"></script>

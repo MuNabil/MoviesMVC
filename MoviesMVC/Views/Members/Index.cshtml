@@ -13,7 +13,7 @@
             <a href="/Members/Create" class="btn btn-default"><i class="fa fa-plus"> Add Member</i></a>
         </div>
 
-        <table>
+        <table id="tblMembers">
             <tr>
                 <th>Image</th>
                 <th>Name</th>
@@ -22,7 +22,7 @@
                 <th>Action</th>
             </tr>
             @foreach(var item in Model){
-            <tr>
+            <tr id="@item.MemberId">
                 <td>
                     <img src="~/Images/@item.MemberImage" class="rounded-circle" style="width:40px">
                     </td>
@@ -43,3 +43,6 @@
         </div>
     </div>
 </div>
+
+<script src="~/js/signalr.js"></script>
+<script src="~/js/member.js"></script>

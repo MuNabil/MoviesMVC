@@ -12,7 +12,7 @@ namespace MoviesMVC.Controllers
             PaginationParams info = new PaginationParams
             {
                 PageNumber = currentPage,
-                PageSize = 9
+                PageSize = 4
             };
             if (string.IsNullOrEmpty(term)) term = "";
             TempData["myterm"] = term;

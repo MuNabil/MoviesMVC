@@ -5,8 +5,10 @@ namespace MoviesMVC.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public GenresController(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IHubContext<GenreHub> _genreHub;
+        public GenresController(IUnitOfWork unitOfWork, IMapper mapper, IHubContext<GenreHub> genreHub)
         {
+            _genreHub = genreHub;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
@@ -32,10 +34,15 @@ namespace MoviesMVC.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            await _unitOfWork.Genres.AddAsync(new Genre { GenreName = model.ItemName, IsApproved = true });
+            var genre = new Genre { GenreName = model.ItemName, IsApproved = true };
+            await _unitOfWork.Genres.AddAsync(genre);
 
             if (await _unitOfWork.Commit())
+            {
+                await _genreHub.Clients.All.SendAsync("NewGenreAdded", genre.GenreName, genre.GenreId);
+
                 return RedirectToAction(nameof(Index));
+            }
 
             ViewBag.CreateError = "Please Try again.!";
             return View(model);
@@ -49,6 +56,8 @@ namespace MoviesMVC.Controllers
             {
                 _unitOfWork.Genres.Delete(genre);
                 await _unitOfWork.Commit();
+
+                await _genreHub.Clients.All.SendAsync("GenreDeleted", id);
             }
             else ViewBag.CreateError = "Please Try again.!";
 

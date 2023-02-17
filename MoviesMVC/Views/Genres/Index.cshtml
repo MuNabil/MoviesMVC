@@ -11,13 +11,13 @@
     <div class="tbl-container">
         <h2>Genres</h2>
 
-        <table>
+        <table id="tblGenres">
             <tr>
                 <th>Name</th>
                 <th>Action</th>
             </tr>
             @foreach(var item in Model){
-            <tr>
+            <tr id="@item.GenreId">
                 <td>@item.GenreName</td>
                 <td>
                     @* <a href="/Genres/Edit?id=@item.GenreId" class="btn btn-default"><i class="fa fa-edit"></i></a> *@
@@ -32,3 +32,6 @@
         </div>
     </div>
 </div>
+
+<script src="~/js/signalr.js"></script>
+<script src="~/js/genre.js"></script>

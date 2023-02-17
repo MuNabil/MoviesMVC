@@ -23,6 +23,8 @@ public class MvcWebAppRegistrar : IWebApplicationRegistrar
 
         app.MapHub<OrderHub>("/hubs/order");
         app.MapHub<MovieHub>("/hubs/movie");
+        app.MapHub<MemberHub>("/hubs/member");
+        app.MapHub<GenreHub>("/hubs/genre");
 
     }
 }

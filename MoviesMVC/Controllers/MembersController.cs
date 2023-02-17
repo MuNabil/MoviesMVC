@@ -5,8 +5,10 @@ namespace MoviesMVC.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public MembersController(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IHubContext<MemberHub> _memberHub;
+        public MembersController(IUnitOfWork unitOfWork, IMapper mapper, IHubContext<MemberHub> memberHub)
         {
+            _memberHub = memberHub;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
@@ -39,10 +41,17 @@ namespace MoviesMVC.Controllers
 
             model.MemberImage = ImageService.NewImageUrl(model.File);
 
-            await _unitOfWork.Members.AddAsync(_mapper.Map<Member>(model));
+            var member = _mapper.Map<Member>(model);
+            await _unitOfWork.Members.AddAsync(member);
 
             if (await _unitOfWork.Commit())
+            {
+
+                await _memberHub.Clients.All.SendAsync("NewMemberAdded", model.MemberImage, model.MemberName,
+                    model.DateOfBirth, model.MemberRole, member.MemberId);
+
                 return RedirectToAction(nameof(Index));
+            }
 
             return GoToCreateView(model, "Please Try again.!");
         }
@@ -55,6 +64,8 @@ namespace MoviesMVC.Controllers
             {
                 _unitOfWork.Members.Delete(member);
                 await _unitOfWork.Commit();
+
+                await _memberHub.Clients.All.SendAsync("MemberDeleted", id);
             }
 
             else ViewBag.CreateError = "Please Try again.!";

@@ -30,44 +30,45 @@
                 <th>Members</th>
             </tr>
             @foreach(var movie in Model){
-            <tr id="@movie.MovieId">
-                <td>
-                    <img src="~/Images/@movie.Poster" class="rounded-circle" style="width:40px">
+                <tr id="@movie.MovieId">
+                    <td>
+                        <img src="~/Images/@movie.Poster" class="rounded-circle" style="width:40px">
+                        </td>
+                    <td>@movie.Title</td>
+                    <td>@movie.ReleaseYear</td>
+                    <td>
+                        @if(movie.Genres is not null)
+                        {
+                            int i = 0;
+                            foreach (var genre in movie.Genres)
+                            {
+                                <span>@genre.Genre?.GenreName</span>
+                                if(i < movie.Genres.Count - 1 && i < 2) {
+                                    <span>, </span>
+                                }
+                                if(i == 2) break; ++i;
+                            }
+                        }
                     </td>
-                <td>@movie.Title</td>
-                <td>@movie.ReleaseYear</td>
-                <td>
-                    @if(movie.Genres is not null){
-                        int i = 0;
-                        foreach (var genre in movie.Genres)
-                        {
-                            <span>@genre.Genre?.GenreName</span>
-                            if(i < movie.Genres.Count - 1 && i < 2) {
-                                <span>, </span>
+                    <td>
+                        @if(movie.Members is not null){
+                            int i = 0;
+                            foreach (var genre in movie.Members)
+                            {
+                                <span>@genre.Member?.MemberName  </span>
+                                if(i < movie.Members.Count - 1 && i < 2) {
+                                    <span>, </span>
+                                }
+                                if(i == 2) break; ++i;
                             }
-                            if(i == 2) break; ++i;
                         }
-                    }
-                </td>
-                <td>
-                    @if(movie.Members is not null){
-                        int i = 0;
-                        foreach (var genre in movie.Members)
-                        {
-                            <span>@genre.Member?.MemberName  </span>
-                            if(i < movie.Members.Count - 1 && i < 2) {
-                                <span>, </span>
-                            }
-                            if(i == 2) break; ++i;
-                        }
-                    }
-                </td>
-                <td>
-                    <a href="/Movies/Detail?id=@movie.MovieId" class="btn btn-sec"><i class="fa fa-eye"></i></a>
-                    <a href="/Movies/Edit?id=@movie.MovieId" class="btn btn-default"><i class="fa fa-edit"></i></a>
-                    <a onclick="return window.confirm('Are you sure?')" href="/Movies/Delete?id=@movie.MovieId" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                </td>
-            </tr>
+                    </td>
+                    <td>
+                        <a href="/Movies/Detail?id=@movie.MovieId" class="btn btn-sec"><i class="fa fa-eye"></i></a>
+                        <a href="/Movies/Edit?id=@movie.MovieId" class="btn btn-default"><i class="fa fa-edit"></i></a>
+                        <a onclick="deleteConfirmation('@movie.MovieId')" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
             }
         
         </table>
@@ -91,6 +92,16 @@
         }
     }
 </div>
+
+<script>
+    function deleteConfirmation(movieID)
+    {
+        alertify.confirm("Are you sure.!",
+        function(){
+            window.location.replace(`/Movies/Delete?id=${movieID}`);
+        });
+    }
+</script>
 
 <script src="~/js/signalr.js"></script>
 <script src="~/js/movie.js"></script>

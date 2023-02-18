@@ -1,0 +1,38 @@
+@model List<Message>
+
+@{
+    ViewData["Title"] = "UnreadMessages";
+}
+
+<div class="container">
+
+    <div class="tbl-container">
+        <h2>Messages</h2>
+
+        <table id="tblUnreadMessages">
+            <tr>
+                <th>Sender</th>
+                <th>Sent at</th>
+                <th>Message</th>
+                <th>Action</th>
+            </tr>
+            @foreach(var item in Model){
+                <tr>
+                    <td>@item.SenderEmail</td>
+                    <td>@item.SendAt</td>
+                    <td>@item.Content</td>
+                    <td>
+                        <a href="/Messages/Chat?userEmail=@item.SenderEmail" class="btn btn-default">Go To Chat</a>
+                    </td>
+                </tr>
+            }
+        
+        </table>
+        <div class="input-container">
+            <a href="/Users/Index" class="btn btn-sec">Back</a>
+        </div>
+    </div>
+</div>
+
+@* <script src="~/js/signalr.js"></script>
+<script src="~/js/chat.js"></script> *@

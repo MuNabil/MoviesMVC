@@ -17,43 +17,48 @@
                 <th>Genres</th>
                 <th>Members</th>
             </tr>
-            @foreach(var movie in Model){
-            <tr>
-                <td>
-                    <img src="~/Images/@movie!.Poster" class="rounded-circle" style="width:40px">
+            @foreach (var movie in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="~/Images/@movie!.Poster" class="rounded-circle" style="width:40px">
+                        </td>
+                    <td>@movie.Title</td>
+                    <td>@movie.ReleaseYear</td>
+                    <td>
+                        @if (movie.Genres is not null)
+                        {
+                            int i = 0;
+                            foreach (var genre in movie.Genres)
+                            {
+                                        <span>@genre.Genre?.GenreName</span>
+                                if (i < movie.Genres.Count - 1 && i <= 2)
+                                {
+                                                <span>, </span>
+                                }
+                                if (i == 2) break; ++i;
+                            }
+                        }
                     </td>
-                <td>@movie.Title</td>
-                <td>@movie.ReleaseYear</td>
-                <td>
-                    @if(movie.Genres is not null){
-                        int i = 0;
-                        foreach (var genre in movie.Genres)
+                    <td>
+                        @if (movie.Members is not null)
                         {
-                            <span>@genre.Genre?.GenreName</span>
-                            if(i < movie.Genres.Count - 1 && i <= 2) {
-                                <span>, </span>
+                            int i = 0;
+                            foreach (var genre in movie.Members)
+                            {
+                                        <span>@genre.Member?.MemberName  </span>
+                                if (i < movie.Members.Count - 1 && i <= 2)
+                                {
+                                                <span>, </span>
+                                }
+                                if (i == 2) break; ++i;
                             }
-                            if(i == 2) break; ++i;
                         }
-                    }
-                </td>
-                <td>
-                    @if(movie.Members is not null){
-                        int i = 0;
-                        foreach (var genre in movie.Members)
-                        {
-                            <span>@genre.Member?.MemberName  </span>
-                            if(i < movie.Members.Count - 1 && i <= 2) {
-                                <span>, </span>
-                            }
-                            if(i == 2) break; ++i;
-                        }
-                    }
-                </td>
+                    </td>
 
-            </tr>
+                </tr>
             }
-        
+
         </table>
         <div class="input-container">
             <a href="/Home/Index" class="btn btn-sec">Back</a>
@@ -63,3 +68,4 @@
 
 <script src="~/js/signalr.js"></script>
 <script src="~/js/order.js"></script>
+<script src="~/js/presence.js"></script/>

@@ -21,20 +21,22 @@
                 <th>Role</th>
                 <th>Action</th>
             </tr>
-            @foreach(var item in Model){
-            <tr id="@item.MemberId">
-                <td>
-                    <img src="~/Images/@item.MemberImage" class="rounded-circle" style="width:40px">
+            @foreach(var item in Model)
+            {
+                string memberId = "member" + item.MemberId;
+                <tr id="@memberId">
+                    <td>
+                        <img src="~/Images/@item.MemberImage" class="rounded-circle" style="width:40px">
                     </td>
-                <td>@item.MemberName</td>
-                <td>@item.DateOfBirth</td>
-                <td>@item.MemberRole</td>
-                <td>
-                    <a href="/Members/Detail?id=@item.MemberId" class="btn btn-sec"><i class="fa fa-eye"></i></a>
-                    <a href="/Members/Edit?id=@item.MemberId" class="btn btn-default"><i class="fa fa-edit"></i></a>
-                    <a onclick="return window.confirm('Are you sure?')" href="/Members/Delete?id=@item.MemberId" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                </td>
-            </tr>
+                    <td>@item.MemberName</td>
+                    <td>@item.DateOfBirth</td>
+                    <td>@item.MemberRole</td>
+                    <td>
+                        <a href="/Members/Detail?id=@item.MemberId" class="btn btn-sec"><i class="fa fa-eye"></i></a>
+                        <a href="/Members/Edit?id=@item.MemberId" class="btn btn-default"><i class="fa fa-edit"></i></a>
+                        <a onclick="deleteConfirmation('@item.MemberId')" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
             }
         
         </table>
@@ -43,6 +45,16 @@
         </div>
     </div>
 </div>
+
+<script>
+    function deleteConfirmation(memberID)
+    {
+        alertify.confirm("Are you sure.!",
+        function(){
+            window.location.replace(`/Members/Delete?id=${memberID}`);
+        });
+    }
+</script>
 
 <script src="~/js/signalr.js"></script>
 <script src="~/js/member.js"></script>

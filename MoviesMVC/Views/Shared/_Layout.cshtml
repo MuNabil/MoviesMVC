@@ -15,6 +15,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="//cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" 
+    integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+    
 </head>
 
 <body>
@@ -29,19 +36,22 @@
                 {
                     <li><a class="active" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a class="active" asp-controller="Orders" asp-action="UserOrders">My Orders</a></li>
-                    <li><a href="/Home/About">About</a></li>
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li>
-                                <a href="#">Admin <i class="fa fa-caret-down"></i></a>
-                                <ul class="dropdown-nav-link">
-                                    <li><a href="/Genres/Index">Genres</a></li>
-                                    <li><a asp-controller="Members" asp-action="Index">Members</a></li>
-                                    <li><a href="/Movies/Index">Manage movies</a></li>
-                                    <li><a asp-controller="Orders" asp-action="Index">Manage Orders</a></li>
-                                </ul>
-                            </li>
-                        }
+                    @if (!User.IsInRole("Admin")){
+                        <li><a href="/Messages/Chat?userEmail=admin@test.com">Talk with Us</a></li>
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <a href="#">Admin <i class="fa fa-caret-down"></i></a>
+                            <ul class="dropdown-nav-link">
+                                <li><a asp-controller="Users" asp-action="Index">Users</a></li>
+                                <li><a asp-controller="Orders" asp-action="Index">Orders</a></li>
+                                <li><a href="/Movies/Index">movies</a></li>
+                                <li><a href="/Genres/Index">Genres</a></li>
+                                <li><a asp-controller="Members" asp-action="Index">Members</a></li>
+                            </ul>
+                        </li>
+                    }
                     <li><a asp-controller="Account" asp-action="Logout">Logout</a></li>
                 }
                 else
@@ -63,11 +73,10 @@
         &hearts; linkedin.com/in/munabil
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" 
-    integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
     <script src="//cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 </body>
 
 

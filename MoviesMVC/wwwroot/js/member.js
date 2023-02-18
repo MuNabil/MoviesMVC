@@ -5,8 +5,8 @@ var connectionMember = new signalR.HubConnectionBuilder()
 
 connectionMember.on(
   "MemberDeleted", (memberId) => {
-    const element = document.getElementById(memberId);
-    element.remove();
+    const element = document.getElementById("member" + memberId);
+    if (element) element.remove();
   }
 );
 

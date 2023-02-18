@@ -21,9 +21,12 @@ namespace MoviesMVC.Controllers
                 return View(model);
 
             var result = await _unitOfWork.Accounts.RegisterAsync(model);
-            await _unitOfWork.Commit();
 
-            if (result.StatusCode == 1) return RedirectToAction(nameof(Login));
+            if (result.StatusCode == 1)
+            {
+                await _unitOfWork.Commit();
+                return RedirectToAction(nameof(Login));
+            }
 
             ViewBag.RegisterError = result.Message;
             return View(model);

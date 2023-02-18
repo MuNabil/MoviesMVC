@@ -5,8 +5,10 @@ namespace MoviesMVC.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHubContext<OrderHub> _orderHub;
-        public OrdersController(IUnitOfWork unitOfWork, IHubContext<OrderHub> orderHub)
+        private readonly UserManager<AppUser> _userManager;
+        public OrdersController(IUnitOfWork unitOfWork, IHubContext<OrderHub> orderHub, UserManager<AppUser> userManager)
         {
+            _userManager = userManager;
             _unitOfWork = unitOfWork;
             _orderHub = orderHub;
         }
@@ -62,7 +64,7 @@ namespace MoviesMVC.Controllers
 
         public async Task<IActionResult> Order(int movieId)
         {
-            var user = await _unitOfWork.Users.FindAsync(u => u.Email == User.GetEmail());
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == User.GetEmail());
             if (await _unitOfWork.Orders.GetOrderByIdAsync(movieId, user!.Id) is not null)
                 return RedirectToAction("Index", "Home");
 
@@ -77,7 +79,7 @@ namespace MoviesMVC.Controllers
 
             await _unitOfWork.Commit();
 
-            await _orderHub.Clients.User(_unitOfWork.Users.FindAsync(u => u.Email.ToLower() == "admin@test.com").Result!.Id)
+            await _orderHub.Clients.User(_userManager.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == "admin@test.com").Result!.Id)
                 .SendAsync("NewOrderPlaced", movie!.Poster, movie.Title, user.Name, user.Email, order.OrderDate, movieId, user.Id);
 
             return RedirectToAction("Index", "Home");
@@ -85,7 +87,7 @@ namespace MoviesMVC.Controllers
 
         public async Task<IActionResult> UserOrders()
         {
-            var user = await _unitOfWork.Users.FindAsync(u => u.Email == User.GetEmail());
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == User.GetEmail());
             var orders = await _unitOfWork.Orders.FindAllAsync(x => x.UserId == user!.Id && x.IsApproved, new[] { "Movie", "Movie.Members.Member", "Movie.Genres.Genre" });
             IEnumerable<Movie?> movies = orders!.Select(x => x.Movie);
             return View(movies);

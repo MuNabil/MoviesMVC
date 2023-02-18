@@ -5,8 +5,8 @@ var connectionGenre = new signalR.HubConnectionBuilder()
 
 connectionGenre.on(
   "GenreDeleted", (genreId) => {
-    const element = document.getElementById(genreId);
-    element.remove();
+    const element = document.getElementById('genre' + genreId);
+    if (element) element.remove();
   }
 );
 

@@ -16,14 +16,16 @@
                 <th>Name</th>
                 <th>Action</th>
             </tr>
-            @foreach(var item in Model){
-            <tr id="@item.GenreId">
-                <td>@item.GenreName</td>
-                <td>
-                    @* <a href="/Genres/Edit?id=@item.GenreId" class="btn btn-default"><i class="fa fa-edit"></i></a> *@
-                    <a onclick="return window.confirm('Are you sure?')" href="/Genres/Delete?id=@item.GenreId" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                </td>
-            </tr>
+            @foreach(var item in Model)
+            {
+                string genreId = "genre" + item.GenreId;
+                <tr id="@genreId">
+                    <td>@item.GenreName</td>
+                    <td>
+                        @* <a href="/Genres/Edit?id=@item.GenreId" class="btn btn-default"><i class="fa fa-edit"></i></a> *@
+                        <a onclick="deleteConfirmation('@item.GenreId')" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
             }
         
         </table>
@@ -32,6 +34,16 @@
         </div>
     </div>
 </div>
+
+<script>
+    function deleteConfirmation(genreID)
+    {
+        alertify.confirm("Are you sure.!",
+        function(){
+            window.location.replace(`/Genres/Delete?id=${genreID}`);
+        });
+    }
+</script>
 
 <script src="~/js/signalr.js"></script>
 <script src="~/js/genre.js"></script>

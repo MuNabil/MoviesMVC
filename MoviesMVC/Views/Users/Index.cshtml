@@ -1,0 +1,52 @@
+@model List<AppUser>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+
+    <div class="tbl-container">
+
+        <div style="margin-bottom: 10px;">
+            <a href="/users/Create" class="btn btn-default"><i class="fa fa-plus"> Add User</i></a>
+            <a href="/Messages/UnreadMessages" style="float: right;" class="btn btn-default"><i class="fa fa-envelope"> Unreaded Messages</i></a>
+        </div>
+
+        @* <h1>users</h1> *@
+
+        <table id="tblusers">
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td>
+                        <a href="/Users/ManageRoles?userId=@user.Id" class="btn btn-sec">Manage Roles</a>
+                        <a href="/Messages/Chat?userEmail=@user.Email" class="btn btn-default"><i class="fa fa-envelope"></i></a>
+                    </td>
+                </tr>
+            }
+
+            @if (TempData["UsersError"] is not null)
+            {
+                    <div class="alert mb-1">
+                    @TempData["UsersError"]
+                    </div>
+                TempData["UsersError"] = null;
+            }
+
+        </table>
+        <div class="input-container">
+            <a href="/Home/Index" class="btn btn-sec">Back</a>
+        </div>
+    </div>
+</div>
+
+@* <script src="~/js/signalr.js"></script>
+<script src="~/js/user.js"></script> *@

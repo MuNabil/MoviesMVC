@@ -1,0 +1,41 @@
+@model MessagesThreadVM
+
+@{
+    ViewData["Title"] = "Chat";
+}
+
+<div class="content" style="margin: auto; background-color: #c3b9b9; width: 70%; padding: 2%; border: 3px outset rgb(182, 107, 222);">
+  <div id="messageCard"  style="overflow: scroll; height: 400px;">
+    @if(Model.Messages?.Count() <= 0)
+    {
+        <div>
+            No messages yet...
+        </div>
+    }
+    else
+    {
+        <ul style="list-style: none; margin: 0; padding: 0;" id="messagesList">
+            @foreach (var message in Model.Messages!)
+            {
+                <li style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dotted #b3a9a9;">
+                    <div style="font-size: 20px;">
+                        <p>@message.SenderEmail says: <span style="margin-left: 10px; color: blue;">@message.Content</span> </p>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+  </div>
+  <form onsubmit="sendMessage('@Model.SenderEmail' , '@Model.RecipientEmail');" action="javascript:void(0);">
+    <div style="display: flex;">
+        <input style="width: 80%; padding: 5px;" id="inputMessage" name="messageContent" required type="text"
+            placeholder="  Send message"/>
+        <button id="buttonMessage" style="width: 10%;" class="btn btn-default" type="submit">
+            Send
+        </button>
+    </div>
+  </form>
+</div>
+
+<script src="~/js/signalr.js"></script>
+<script src="~/js/chat.js"></script>

@@ -21,11 +21,11 @@
         <div>
             @if (Model.Poster != null)
             {
-                    <div style="margin-bottom: 20px;">
-                    <h3 style="margin-right: 20px;">
-                        <img src="~/Images/@Model.Poster" style="width: auto; height: 400px; object-fit: cover;" class="img-thumbnail" />
-                    </h3> 
-                </div>
+                        <div style="margin-bottom: 20px;">
+                        <h3 style="margin-right: 20px;">
+                            <img src="~/Images/@Model.Poster" style="width: auto; height: 400px; object-fit: cover;" class="img-thumbnail" />
+                        </h3> 
+                    </div>
             }
         </div>
         <div style=" width: 70%; " id="MyCard">
@@ -50,10 +50,10 @@
                                         int i = 0;
                                         foreach (var genre in Model.Genres)
                                         {
-                                            <span>@genre.Genre?.GenreName</span>
+                                                    <span>@genre.Genre?.GenreName</span>
                                             if (i < Model.Genres.Count - 1)
                                             {
-                                                    <span>, </span>
+                                                                <span>, </span>
                                             }
                                             ++i;
                                         }
@@ -80,14 +80,14 @@
                             {
                                 @foreach (var movieMember in Model.Members)
                                 {
-                                            <tr style="cursor: pointer;" 
-                                                onclick="window.location.href='/Members/Detail?id=@movieMember.Member?.MemberId'">
-                                                <td>
-                                                    <img src="~/Images/@movieMember.Member!.MemberImage" class="rounded-circle" style="width:40px">
-                                                </td>
-                                                <td>@movieMember.Member.MemberRole</td>
-                                                <td>@movieMember.Member.MemberName</td>
-                                            </tr>
+                                                    <tr style="cursor: pointer;" 
+                                                        onclick="window.location.href='/Members/Detail?id=@movieMember.Member?.MemberId'">
+                                                        <td>
+                                                            <img src="~/Images/@movieMember.Member!.MemberImage" class="rounded-circle" style="width:40px">
+                                                        </td>
+                                                        <td>@movieMember.Member.MemberRole</td>
+                                                        <td>@movieMember.Member.MemberName</td>
+                                                    </tr>
                                 }
                             }
 
@@ -96,7 +96,7 @@
                 </div>
             </div>
 
-            
+
         </div>
     </div>
 </div>
@@ -106,3 +106,5 @@
 </div>
 
 <script src="~/js/tabs.js"></script>
+<script src="~/js/signalr.js"></script>
+<script src="~/js/presence.js"></script/>

@@ -20,7 +20,6 @@ namespace MoviesMVC.Repositories.Implementations
 
         public IAccountRepository Accounts => new AccountRepository(_userManager, _mapper, _signInManager, _roleManager);
 
-        public IUserRepository Users => new UserRepository(_context);
         public IMovieRepository Movies => new MovieRepository(_context);
 
         public IGenreRepository Genres => new GenreRepository(_context);
@@ -29,7 +28,10 @@ namespace MoviesMVC.Repositories.Implementations
         public IMovieGenreRepository MovieGenres => new MovieGenreRepository(_context);
 
         public IMovieMemberRepository MovieMembers => new MovieMemberRepository(_context);
+
         public IOrderRepository Orders => new OrderRepository(_context);
+
+        public IMessageRepository Messages => new MessageRepository(_context);
 
         public async Task<bool> Commit()
         {

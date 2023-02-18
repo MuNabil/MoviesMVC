@@ -26,7 +26,9 @@ namespace MoviesMVC.Services
                 string uniqueImageName = Guid.NewGuid().ToString() + Path.GetExtension(imageName);
 
                 var imagePath = Path.Combine(@"wwwroot/", "Images", uniqueImageName);
-                ImageFile.CopyTo(new FileStream(imagePath, FileMode.Create));
+                var file = new FileStream(imagePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+                ImageFile.CopyTo(file);
+                file.Dispose();
 
                 return uniqueImageName;
             }

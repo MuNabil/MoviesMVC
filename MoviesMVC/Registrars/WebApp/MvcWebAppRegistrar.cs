@@ -25,6 +25,8 @@ public class MvcWebAppRegistrar : IWebApplicationRegistrar
         app.MapHub<MovieHub>("/hubs/movie");
         app.MapHub<MemberHub>("/hubs/member");
         app.MapHub<GenreHub>("/hubs/genre");
+        app.MapHub<MessageHub>("/hubs/chat");
+        app.MapHub<PresenceHub>("/hubs/presence");
 
     }
 }

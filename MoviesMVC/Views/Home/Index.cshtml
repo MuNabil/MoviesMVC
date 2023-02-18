@@ -14,33 +14,34 @@
 <section class="movies" id="moviesCard">
     @foreach (var movie in Model)
     {
-        <div id="@movie.MovieId" class="movie-card" onclick="window.location.href='/Movies/Detail?id=@movie.MovieId'">
-            <div class="movie-image">
-                <img src="~/Images/@movie.Poster" style="width: 200px; object-fit: cover">
-            </div>
-            <div class="movie-info">
-                <h4>@movie.Title</h4>
+            <div id="@movie.MovieId" class="movie-card" onclick="window.location.href='/Movies/Detail?id=@movie.MovieId'">
+                <div class="movie-image">
+                    <img src="~/Images/@movie.Poster" style="width: 200px; object-fit: cover">
+                </div>
+                <div class="movie-info">
+                    <h4>@movie.Title</h4>
                 @* <span>@movie.Genres?.ToString() </span> *@
                 @if (movie.Genres is not null)
                 {
                     int i = 0;
                     foreach (var genre in movie.Genres)
                     {
-                        <span>@genre.Genre?.GenreName</span>
-                        if(i < movie.Genres.Count - 1 && i < 2) {
-                            <span>, </span>
+                                    <span>@genre.Genre?.GenreName</span>
+                        if (i < movie.Genres.Count - 1 && i < 2)
+                        {
+                                            <span>, </span>
                         }
                         if (i == 2) break; ++i;
                     }
                 }
-                <h4>@movie.ReleaseYear</h4>
+                    <h4>@movie.ReleaseYear</h4>
+                </div>
             </div>
-        </div>
     }
     <div class="input-container">
         @if (TempData["myterm"]!.ToString() != "")
         {
-            <a href="/Home/Index" class="btn btn-default" style="margin-left: 30px;">Show All</a>
+                <a href="/Home/Index" class="btn btn-default" style="margin-left: 30px;">Show All</a>
         }
     </div>
 </section>
@@ -51,8 +52,9 @@
         if (i == Model.CurrentPage)
         {
                     <a href="/Home/Index?currentPage=@i&term=@TempData["myterm"]" class="active">@i</a>
-                }
-                else{
+        }
+        else
+        {
                     <a href="/Home/Index?currentPage=@i&term=@TempData["myterm"]">@i</a>
         }
     }
@@ -60,3 +62,4 @@
 
 <script src="~/js/signalr.js"></script>
 <script src="~/js/movie.js"></script>
+<script src="~/js/presence.js"></script/>
